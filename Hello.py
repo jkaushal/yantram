@@ -1,53 +1,46 @@
 import streamlit as st
+from langchain_community.llms import Ollama
 
-from langchain_ollama import OllamaEmbeddings
 
-embeddings = OllamaEmbeddings(
-    model="llama3",
-)
-
-# Create a vector store with a sample text
-from langchain_core.vectorstores import InMemoryVectorStore
-
-text = "LangChain is the framework for building context-aware reasoning applications"
-
-vectorstore = InMemoryVectorStore.from_texts(
-    [text],
-    embedding=embeddings,
-)
-
-# Use the vectorstore as a retriever
-retriever = vectorstore.as_retriever()
-
-# Retrieve the most similar text
-retrieved_documents = retriever.invoke("What is LangChain?")
-
-# show the retrieved document's content
-retrieved_documents[0].page_content
 
 st.set_page_config(
     page_title="Hello",
     page_icon="👋",
 )
 
-st.write("# Welcome to Streamlit! 👋")
+st.write("# Welcome to Yantram! your own photo manager 👋")
 
-st.sidebar.success("Select a demo above.")
+from langchain_ollama import ChatOllama
+import streamlit as st
 
-st.markdown(
-    """
-    Streamlit is an open-source app framework built specifically for
-    Machine Learning and Data Science projects.
-    **👈 Select a demo from the sidebar** to see some examples
-    of what Streamlit can do!
-    ### Want to learn more?
-    - Check out [streamlit.io](https://streamlit.io)
-    - Jump into our [documentation](https://docs.streamlit.io)
-    - Ask a question in our [community
-        forums](https://discuss.streamlit.io)
-    ### See more complex demos
-    - Use a neural net to [analyze the Udacity Self-driving Car Image
-        Dataset](https://github.com/streamlit/demo-self-driving)
-    - Explore a [New York City rideshare dataset or something else  ](https://github.com/streamlit/demo-uber-nyc-pickups)
-"""
+llm = ChatOllama(
+    model="llama3",
+    temperature=0.8,
+    num_predict=256,
+    # other params ...
 )
+
+st.title("Echo Bot")
+
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# React to user input
+if prompt := st.chat_input("What is up?"):
+    # Display user message in chat message container
+    st.chat_message("user").markdown(prompt)
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    response = f"Echo: {prompt}"
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        st.markdown(response)
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})

@@ -6,6 +6,11 @@ Using `llava` and `bakllava` models (Ollama) to chat with images.
 
 ### Getting Started
 
+Deploy base models (venv recommended)
+```bash
+ollama run llama3
+ollama run llama3
+
 Install required packages (venv recommended)
 ```bash
 pip install -r requirements.txt

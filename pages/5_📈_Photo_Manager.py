@@ -12,23 +12,20 @@ st.subheader("Let us help you manage your photos..")
 def upload_image():
     images = st.file_uploader("Upload an image to chat about", type=["png", "jpg", "jpeg"], accept_multiple_files=True)
     # assert max number of images, e.g. 7
+    images_b64 = []
+    for image in images:
+        image_b64 = convert_to_base64(image)
+        images_b64.append(image_b64)
+
+    # display images in multiple columns
+    cols = st.columns(len(images_b64))
+    for i, col in enumerate(cols):
+        col.markdown(f"**Image {i + 1}**")
+        col.markdown(convert_to_html(images_b64[i]), unsafe_allow_html=True)
+    st.markdown("---")
     assert len(images) <= 7, (st.error("Please upload at most 7 images"), st.stop())
-
-    if images:
-        # convert images to base64
-        images_b64 = []
-        for image in images:
-            image_b64 = convert_to_base64(image)
-            images_b64.append(image_b64)
-
-        # display images in multiple columns
-        cols = st.columns(len(images_b64))
-        for i, col in enumerate(cols):
-            col.markdown(f"**Image {i+1}**")
-            col.markdown(convert_to_html(images_b64[i]), unsafe_allow_html=True)
-        st.markdown("---")
-        return images_b64
     st.stop()
+    return images_b64
 
 
 @st.cache_data(show_spinner=False)
