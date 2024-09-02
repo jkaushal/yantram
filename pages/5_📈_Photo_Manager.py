@@ -23,9 +23,9 @@ def upload_image():
         col.markdown(f"**Image {i + 1}**")
         col.markdown(convert_to_html(images_b64[i]), unsafe_allow_html=True)
     st.markdown("---")
+    return images_b64
     assert len(images) <= 7, (st.error("Please upload at most 7 images"), st.stop())
     st.stop()
-    return images_b64
 
 
 @st.cache_data(show_spinner=False)

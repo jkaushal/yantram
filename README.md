@@ -9,7 +9,7 @@ Using `llava` and `bakllava` models (Ollama) to chat with images.
 Deploy base models (venv recommended)
 ```bash
 ollama run llama3
-ollama run llama3
+ollama run llava
 
 Install required packages (venv recommended)
 ```bash

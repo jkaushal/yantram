@@ -14,3 +14,10 @@ langchain-community~=0.2.15
 langchain-text-splitters~=0.2.2
 altair~=5.4.1
 langchain-core~=0.2.37
+pinecone-client
+PyPDF2
+pypdf
+streamlit_chat
+st-chat-message
+sentence_transformers
+unstructured
